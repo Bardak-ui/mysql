@@ -1,0 +1,145 @@
+mysql -u root -p # вход в среду mysql
+------------------------------------------
+SHOW DATABASES; # показать доступные бд
+------------------------------------------
+CREATE DATABASE testdb; # создание бд
+------------------------------------------
+USE (ваше название "testdb"); # выбор сущ. бд
+------------------------------------------
+CREATE TABLE users(  
+id INT AUTO_INCREMENT PRIMARY KEY, # создание столба id с 
+username VARCHAR(100) NOT NULL, # создание столбца с текстом который не может быть пустым
+email VARCHAR(100), # создание столбца с текстом который может быть пустым
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP # создание столбца с реальным временем
+);
+------------------------------------------
+SHOW TABLES; # показать доступные таблицы в бд
+------------------------------------------
+DESCRIBE users; # посмотреть структуру таблицы
+------------------------------------------
+INSERT INTO users (username,email) VALUES ('Bardak','Bardak@gmail.com'); # заносим данные в таблицу нашей бд
+------------------------------------------------------------------------------------
+SELECT * FROM users; # узнать данные записанные в таблицу users или же ваше название
+SELECT title,author,pud_year FROM 
+------------------------------------------------------------------------------------
+DELETE FROM users WHERE username='Bardak'; # удаление пользователя по его username
+DELETE FROM users WHERE id=1; # удаление пользователя по его id 
+DELETE FROM users WHERE email='useremail@gmail.com'; # удаление пользователя по его email 
+------------------------------------------------------------------------------------
+UPDATE users SET email='newemail@gmail.com' FROM username='name'; # обновить данные одного из пользователя
+UPDATE books SET pus_year = 1965 WHERE title = 'Час быка'; # изменяем определенные данные в определнной строке (мы меняем год выпуска именно для книги 'Час быка')
+------------------------------------------------------------------------------------
+DROP TABLE (название таблицы в бд "users") # Удаление таблицы в базе данных целеком 
+DROP DATABASE (название бд "testdb") # Удаление базы данных целеком 
+------------------------------------------------------------------------------------
+FOREIGN KEY (author_id) REFERENCES author(id) ON DELETE CASCADE
+------------------------------------------------------------------------------------
+INSERT INTO books (title,author_id) VALUES
+    -> ('Войнв и мир', 1), #писать номер автора только в диапазоне кол-во авторов не болле сущ.
+
+SELECT books.title, author.name
+SELECT books.title
+
+FROM books
+
+INER JOIN author ON books.author_id = author.id;
+
+DELETE FROM author WHERE name = 'Плетнев';
+
+WHERE author.name = 'Толстой';
+
+INSERT INTO books (title,author,pud_year) VALUES
+    ('Алиса в стране чудес','Льюис Кэрол',1234),
+    ('Алиса в зазеркалье','Льюис Кэрол',1865),
+    ('Час быка','Иван Ефимов',1967),
+    ('Туманность андромеды','Иван Ефимов',1969),
+    ('Дети капитана Гранта','Жюль Верн',1854);
+
+
+Windows PowerShell
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+Попробуйте новую кроссплатформенную оболочку PowerShell (https://aka.ms/pscore6)
+
+PS C:\Users\Bardak.DESKTOP-DMS3IP2> mysql -u root -p
+>>
+Enter password: ***********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 9.0.1 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE shop_management(
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(' at line 1
+mysql> CREATE DATABASE shop_management;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CREATE TABLE costumers(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> name VARCHAR(100) NOT NULL,
+    -> email VARCHAR(100) NOT NULL);
+ERROR 1046 (3D000): No database selected
+mysql> USE shop_management;
+Database changed
+mysql> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> CREATE TABLE
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE' at line 1
+mysql> CREATE TABLE costumers(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> name VARCHAR(100) NOT NULL,
+    -> email VARCHAR(100) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE orders(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> order_date DATE NOT NULL,
+    -> customer_id INT,
+    -> FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE);
+ERROR 1824 (HY000): Failed to open the referenced table 'customers'
+mysql> CREATE TABLE orders(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> order_date DATE NOT NULL,
+    -> customer_id INT,
+    -> FOREIGN KEY (customer_id) REFERENCES custumers(id) ON DELETE CASCADE);
+ERROR 1824 (HY000): Failed to open the referenced table 'custumers'
+mysql> CREATE TABLE orders(
+    -> order_date DATE NOT NULL,
+    -> FOREIGN KEY (customer_id) REFERENCES custumers(id) ON DELETE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> CREATE TABLE orders(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> order_date DATE NOT NULL,
+    -> customer_id INT,
+    -> FOREIGN KEY (customer_id) REFERENCES costumers(id) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE products(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> product_name VARCHAR(100) NOT NULL,
+    -> price DECIMAL(10,2) NOT NULL);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE order_items(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> order_id INT,
+    -> product_id INT,
+    -> FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> CREATE TABLE order_items(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> order_id INT,
+    -> product_id INT,
+    -> FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    -> FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.04 sec)
+
